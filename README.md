@@ -230,7 +230,61 @@ extract_anno --genes Zlep_brain_Bourake_Control.DEGs.txt --anno ../unprot_name_d
 DESeq --matrix Zlep_gill_reads_matrix.xls --samples coldata_Zlep_gill.txt --column site --prefix Zlep_gill
 # 2443 DEGs
 extract_anno --genes Zlep_gill_Bourake_Control.DEGs.txt --anno ../unprot_name_description_orthgroup.txt --col 1 >Zlep_gill_Bourake_Control.DEGs.ano.txt
+
+# PCA including all individuals
+# kangjingliang@KangdeMacBook-Pro-2 五  9 26 2025 13:31:14 ~/Documents/2025/New_caledonia/Reads_nb_matrix
+perl temp1.pl > All_sample_reads_nb.txt
+# kangjingliang@KangdeMacBook-Pro-2 五  9 26 2025 13:49:45 ~/Documents/2025/New_caledonia/Reads_nb_matrix
+less All_sample_reads_nb.txt|head -n 1|perl -alne '@a=split /\t/;for (my $i=1; $i<@a; $i++){print $a[$i]}' > sample_info.txt
+# kangjingliang@KangdeMacBook-Pro-2 五  9 26 2025 14:25:50 ~/Documents/2025/New_caledonia/Reads_nb_matrix
+perl temp2.pl > sample_info3.txt
+# use sample_info3.txt
 ```
+
+## Enrichment analysis
+```bash
+# obtain the sequences of mapped uniprot ID for the functional enrichment
+# jlkang@hnu2024 Tue Sep 23 2025 08:28:20 ~/HK/New_caledonia/kraken/orthologue/orthofinder_input_pep/OrthoFinder/Results_Jun28
+perl create_orth_seq.pl > orth_seq.fasta
+# Omicsbox
+```
+
+## The common and species-specific DEGs
+### The common DEGs between tissues of different species
+```bash
+# kangjingliang@KangdeMacBook-Pro-2 日  9 28 2025 21:57:54 ~/Documents/2025/New_caledonia/Reads_nb_matrix
+# Common_DEGs_gill_DaruZlep.txt: 370
+# Common_DEGs_brain_DaruZlep.txt: 90
+perl temp3.pl Common_DEGs_brain_DaruZlep.txt > Common_DEGs_brain_DaruZlep_ano.txt
+perl temp3.pl Common_DEGs_gill_DaruZlep.txt > Common_DEGs_gill_DaruZlep_ano.txt
+
+# put all common DEGs between tissues for functional enrichment
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 11:31:48 ~/Documents/2025/New_caledonia/Reads_nb_matrix/Common_enrich_gill
+less Common_gill_fisher.txt|perl -alne '@a=split /\t/;print if ($a[3] eq "BIOLOGICAL_PROCESS" && $a[4] <=0.05)'
+# 36 significantly enriched functions: circadian rhythm, glucocorticoid
+
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 11:41:40 ~/Documents/2025/New_caledonia/Reads_nb_matrix/Common_enrich_brain
+less Common_brain_fisher.txt|perl -alne '@a=split /\t/;print if ($a[3] eq "BIOLOGICAL_PROCESS" && $a[4] <=0.05)'
+# 30 significantly enriched functions: circadian rhythm, glucocorticoid, photoperiodism, blue light signaling pathway, cellular response to blue light, entrainment of circadian clock by photoperiod
+```
+### The species-specific DEGs in each species
+```bash
+# Daru
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 17:24:24 ~/Documents/2025/New_caledonia/Daru/Enrichment_brain
+perl Add_genes.pl Daru_brain_fisher_GOseq.txt Daru_brain_fisher.txt > DaruBrain_enrichment.txt
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 17:26:22 ~/Documents/2025/New_caledonia/Daru/Enrichment_gill
+perl Add_genes.pl Daru_gill_fisher_GOseq.txt Daru_gill_fisher.txt > DaruGill_enrichment.txt
+
+# Zlep
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 17:29:18 ~/Documents/2025/New_caledonia/Zlep/Enrichment_brain
+perl Add_genes.pl Zlep_brain_fisher_GOseq.txt Zlep_brain_fisher.txt > ZlepBrain_enrichment.txt
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 17:30:16 ~/Documents/2025/New_caledonia/Zlep/Enrichment_gill
+perl Add_genes.pl Zlep_gill_fisher_GOseq.txt Zlep_gill_fisher.txt > ZlepGill_enrichment.txt
+
+# kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 17:46:20 ~/Documents/2025/New_caledonia/Daru/Enrichment_brain
+extract_gene_functions -i DaruBrain_enrichment.txt -a ../../unprot_name_description_orthgroup.txt --gene_column 1 --func_column 3 --functions light_func.txt --output light_func_DEGs
+```
+
 
 ```
 # download and install Trinity
