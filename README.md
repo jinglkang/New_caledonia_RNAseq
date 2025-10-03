@@ -283,6 +283,15 @@ perl Add_genes.pl Zlep_gill_fisher_GOseq.txt Zlep_gill_fisher.txt > ZlepGill_enr
 
 # kangjingliang@KangdeMacBook-Pro-2 一  9 29 2025 17:46:20 ~/Documents/2025/New_caledonia/Daru/Enrichment_brain
 extract_gene_functions -i DaruBrain_enrichment.txt -a ../../unprot_name_description_orthgroup.txt --gene_column 1 --func_column 3 --functions light_func.txt --output light_func_DEGs
+
+# common DEGs
+# kangjingliang@KangdeMBP-2 三 10 01 2025 10:17:20 ~/Documents/2025/New_caledonia/Reads_nb_matrix/Common_enrich_brain
+perl Add_genes.pl Common_brain_fisher_GOseq.txt Common_brain_fisher.txt > CommonBrain_enrichment.txt
+extract_gene_functions -i CommonBrain_enrichment.txt -a ../../unprot_name_description_orthgroup.txt --gene_column 1 --func_column 3 --functions circadian_functions.txt --output circadian_func_DEGs
+
+# kangjingliang@KangdeMBP-2 三 10 01 2025 10:18:45 ~/Documents/2025/New_caledonia/Reads_nb_matrix/Common_enrich_gill
+perl Add_genes.pl Common_gill_fisher_GOseq.txt Common_gill_fisher.txt > CommonGill_enrichment.txt
+extract_gene_functions -i CommonGill_enrichment.txt -a ../../unprot_name_description_orthgroup.txt --gene_column 1 --func_column 3 --functions circadian_functions.txt --output circadian_func_DEGs
 ```
 
 
